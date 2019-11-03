@@ -43,7 +43,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    disableHostCheck: true
+    disableHostCheck: true // 在webpack.dev.conf.js中取消host验证
   },
   plugins: [
     new webpack.DefinePlugin({

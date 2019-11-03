@@ -1,14 +1,17 @@
 <template>
   <v-card>
-    <v-card-title>
+    <v-card-title flat color="white">
+      <!--新增按钮-->
       <v-btn color="primary" @click="addBrand">新增品牌</v-btn>
       <!--搜索框，与search属性关联-->
+      <!--空间隔离组件-->
       <v-spacer/>
       <v-flex xs3>
-      <v-text-field label="输入关键字搜索" v-model.lazy="search" append-icon="search" hide-details/>
+        <v-text-field label="输入关键字搜索" v-model.lazy="search" append-icon="search" hide-details/>
       </v-flex>
     </v-card-title>
     <v-divider/>
+    <!--列表-->
     <v-data-table
       :headers="headers"
       :items="brands"
@@ -25,6 +28,7 @@
           <span v-else>无</span>
         </td>
         <td class="text-xs-center">{{ props.item.letter }}</td>
+        <!--编辑按钮-->
         <td class="justify-center layout px-0">
           <v-btn icon @click="editBrand(props.item)">
             <i class="el-icon-edit"/>
@@ -43,7 +47,9 @@
           <v-toolbar-title>{{isEdit ? '修改' : '新增'}}品牌</v-toolbar-title>
           <v-spacer/>
           <!--关闭窗口的按钮-->
-          <v-btn icon @click="closeWindow"><v-icon>close</v-icon></v-btn>
+          <v-btn icon @click="closeWindow">
+            <v-icon>close</v-icon>
+          </v-btn>
         </v-toolbar>
         <!--对话框的内容，表单-->
         <v-card-text class="px-5" style="height:400px">
@@ -62,12 +68,12 @@
     name: "brand",
     data() {
       return {
-        search: '', // 搜索过滤字段
+        search: '', // 搜索关键字
         totalBrands: 0, // 总条数
         brands: [], // 当前页品牌数据
         loading: true, // 是否在加载中
         pagination: {}, // 分页信息
-        headers: [
+        headers: [  // 表头
           {text: 'id', align: 'center', value: 'id'},
           {text: '名称', align: 'center', sortable: false, value: 'name'},
           {text: 'LOGO', align: 'center', sortable: false, value: 'image'},
@@ -81,7 +87,7 @@
     },
     mounted() { // 渲染后执行
       // 查询数据
-      this.getDataFromServer();
+      this.getDataFromServer(); // 调用数据初始化函数
     },
     watch: {
       pagination: { // 监视pagination属性的变化
@@ -109,7 +115,9 @@
             desc: this.pagination.descending// 是否降序
           }
         }).then(resp => { // 这里使用箭头函数
+          // 品牌数据
           this.brands = resp.data.items;
+          // 总条数
           this.totalBrands = resp.data.total;
           // 完成赋值后，把加载状态赋值为false
           this.loading = false;
@@ -123,7 +131,7 @@
         // 把oldBrand变为null
         this.oldBrand = null;
       },
-      editBrand(oldBrand){
+      editBrand(oldBrand) {
         // 根据品牌信息查询商品分类
         this.$http.get("/item/category/bid/" + oldBrand.id)
           .then(({data}) => {
@@ -132,20 +140,36 @@
             // 控制弹窗可见：
             this.show = true;
             // 获取要编辑的brand
-            this.oldBrand = oldBrand
+            this.oldBrand = oldBrand;
             // 回显商品分类
             this.oldBrand.categories = data;
           })
       },
-      closeWindow(){
+      deleteBrand(item) {
+        this.$message.confirm('此操作将永久删除该品牌, 是否继续?').then(() => {
+          // 发起删除请求
+          this.$http.delete("/item/brand/" + item.id)
+            .then(() => {
+              // 删除成功
+              this.$message.success("删除成功！");
+              // 重新加载数据
+              this.getDataFromServer();
+            })
+            .catch(() => {
+              // 删除失败
+              this.$message.info("删除已取消！");
+            });
+        });
+      },
+      closeWindow() {
         // 重新加载数据
         this.getDataFromServer();
         // 关闭窗口
         this.show = false;
       }
     },
-    components:{
-        BrandForm
+    components: {
+      BrandForm
     }
   }
 </script>

@@ -14,7 +14,11 @@
       </v-flex>
       <v-flex>
         <v-upload
-          v-model="brand.image" url="/upload/image" :multiple="false" :pic-width="250" :pic-height="90"
+          v-model="brand.image"
+          url="/upload/image"
+          :multiple="false"
+          :pic-width="250"
+          :pic-height="90"
         />
       </v-flex>
     </v-layout>
@@ -47,10 +51,12 @@
           image: '',// 品牌logo
           categories: [], // 品牌所属的商品分类数组
         },
+        // 品牌名称校验
         nameRules: [
           v => !!v || "品牌名称不能为空",
           v => v.length > 1 || "品牌名称至少2位"
         ],
+        // 首字母校验
         letterRules: [
           v => !!v || "首字母不能为空",
           v => /^[a-zA-Z]{1}$/.test(v) || "品牌字母只能是1个字母"
@@ -58,6 +64,7 @@
       }
     },
     methods: {
+      // 表单提交
       submit() {
         // 表单校验
         if (this.$refs.myBrandForm.validate()) {
@@ -70,12 +77,13 @@
           // 将数据提交到后台
           // this.$http.post('/item/brand', this.$qs.stringify(params))
           this.$http({
-            method: this.isEdit ? 'put' : 'post',
+            method: this.isEdit ? 'put' : 'post', // 动态判断是POST还是PUT
             url: '/item/brand',
             data: this.$qs.stringify(params)
           }).then(() => {
             // 关闭窗口
             this.$emit("close");
+            // 弹出提示
             this.$message.success("保存成功！");
           })
             .catch(() => {
@@ -91,7 +99,7 @@
       }
     },
     watch: {
-      oldBrand: {// 监控oldBrand的变化
+      oldBrand: { // 监控oldBrand的变化
         handler(val) {
           if (val) {
             // 注意不要直接复制，否则这边的修改会影响到父组件的数据，copy属性即可
