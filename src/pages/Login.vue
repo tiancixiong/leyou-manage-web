@@ -41,22 +41,22 @@
 </template>
 
 <script>
-export default {
-  data: () => ({
-    username: "",
-    password: "",
-    dialog: false,
-    e1:false
-  }),
-  methods: {
-    doLogin() {
-      if (!this.username || !this.password) {
-        this.dialog = true;
-        return false;
+  export default {
+    data: () => ({
+      username: "",
+      password: "",
+      dialog: false,
+      e1:false
+    }),
+    methods: {
+      doLogin() {
+        if (!this.username || !this.password) {
+          this.dialog = true;
+          return false;
+        }
+        console.log(this.username + " ... " + this.password);
+        this.$router.push("/");
       }
-      console.log(this.username + " ... " + this.password);
-      this.$router.push("/");
     }
-  }
-};
+  };
 </script>
