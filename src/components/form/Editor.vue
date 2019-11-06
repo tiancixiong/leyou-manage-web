@@ -14,7 +14,7 @@
         </select>
         <!-- Add subscript and superscript buttons -->
         <span class="ql-formats"><button class="ql-script" value="sub"></button></span>
-        <span class="ql-formats"><button class="ql-script" value="super"></button></button></span>
+        <span class="ql-formats"><button class="ql-script" value="super"></button></span>
         <span class="ql-formats"><button type="button" class="ql-bold"></button></span>
         <span class="ql-formats"><button type="button" class="ql-italic"></button></span>
         <span class="ql-formats"><button type="button" class="ql-blockquote"></button></span>
@@ -56,8 +56,8 @@
         type: String,
         default: 'file'
       },
-      maxUploadSize:{
-        type:Number,
+      maxUploadSize: {
+        type: Number,
         default: 1024 * 1024 * 500
       }
     },
@@ -91,11 +91,11 @@
         var data = new FormData;
         data.append(this.fileName, fileInput.files[0]);
         this.$http.post(this.uploadUrl, data)
-          .then(res => {
-            if (res.data) {
-              this.editor.insertEmbed(this.editor.getSelection().index, 'image', res.data)
-            }
-          })
+            .then(res => {
+              if (res.data) {
+                this.editor.insertEmbed(this.editor.getSelection().index, 'image', res.data)
+              }
+            })
       },
       /*点击上传图片按钮*/
       imgClick() {

@@ -30,97 +30,97 @@
 </template>
 
 <script>
-  import {Upload} from 'element-ui';
-  import config from '../../config'
+    import {Upload} from 'element-ui';
+    import config from '../../config'
 
-  export default {
-    name: "vUpload",
-    components: {
-      elUpload: Upload
-    },
-    props: {
-      url: {
-        type: String
-      },
-      value: {},
-      multiple: {
-        type: Boolean,
-        default: true
-      },
-      picWidth: {
-        type: Number,
-        default: 150
-      },
-      picHeight: {
-        type: Number,
-        default: 150
-      }
-    },
-    data() {
-      return {
-        showBtn: false,
-        show: false,
-        dialogImageUrl: "",
-        baseUrl: config.api,
-        avatarStyle: {
-          width: this.picWidth + 'px',
-          height: this.picHeight + 'px',
-          'line-height': this.picHeight + 'px'
+    export default {
+        name: "vUpload",
+        components: {
+            elUpload: Upload
         },
-        fileList:[]
-      }
-    },
-    mounted(){
-      if (!this.value || this.value.length <= 0) {
-        return;
-      }
-      if (this.multiple) {
-        this.fileList = this.value.map(f => {
-          return {response: f, url:f}
-        });
-      } else {
-        this.dialogImageUrl = this.value;
-      }
-    },
-    methods: {
-      handleSuccess(resp, file) {
-        if (!this.multiple) {
-          this.dialogImageUrl = file.response;
-          this.$emit("input", file.response)
-        } else {
-          this.fileList.push(file)
-          this.$emit("input", this.fileList.map(f => f.response))
+        props: {
+            url: {
+                type: String
+            },
+            value: {},
+            multiple: {
+                type: Boolean,
+                default: true
+            },
+            picWidth: {
+                type: Number,
+                default: 150
+            },
+            picHeight: {
+                type: Number,
+                default: 150
+            }
+        },
+        data() {
+            return {
+                showBtn: false,
+                show: false,
+                dialogImageUrl: "",
+                baseUrl: config.api,
+                avatarStyle: {
+                    width: this.picWidth + 'px',
+                    height: this.picHeight + 'px',
+                    'line-height': this.picHeight + 'px'
+                },
+                fileList: []
+            }
+        },
+        mounted() {
+            if (!this.value || this.value.length <= 0) {
+                return;
+            }
+            if (this.multiple) {
+                this.fileList = this.value.map(f => {
+                    return {response: f, url: f}
+                });
+            } else {
+                this.dialogImageUrl = this.value;
+            }
+        },
+        methods: {
+            handleSuccess(resp, file) {
+                if (!this.multiple) {
+                    this.dialogImageUrl = file.response;
+                    this.$emit("input", file.response)
+                } else {
+                    this.fileList.push(file)
+                    this.$emit("input", this.fileList.map(f => f.response))
+                }
+            },
+            handleRemove(file, fileList) {
+                this.fileList = fileList;
+                this.$emit("input", fileList.map(f => f.response))
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.response;
+                this.show = true;
+            },
+            removeSingle() {
+                this.dialogImageUrl = "";
+                this.$refs.singleUpload.clearFiles();
+            }
+        },
+        watch: {
+            value: {
+                deep: true,
+                handler(val, oldVal) {
+
+                    if (this.multiple) {
+                        this.fileList = val.map(f => {
+                            return {response: f, url: f}
+                        });
+                    } else {
+                        this.dialogImageUrl = val;
+                    }
+                }
+            }
         }
-      },
-      handleRemove(file, fileList) {
-        this.fileList = fileList;
-        this.$emit("input", fileList.map(f => f.response))
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.response;
-        this.show = true;
-      },
-      removeSingle() {
-        this.dialogImageUrl = "";
-        this.$refs.singleUpload.clearFiles();
-      }
-    },
-    watch: {
-      value:{
-        deep:true,
-        handler(val,oldVal){
-    
-          if (this.multiple) {
-            this.fileList = val.map(f => {
-              return {response: f,url:f}
-            });
-          } else {
-            this.dialogImageUrl = val;
-          }
-        }
-      }
     }
-  }
 </script>
 
 <style scoped>

@@ -127,16 +127,16 @@
     methods: {
       loadData() {
         this.$http
-          .get("/item/spec/params?gid=" + this.group.id)
-          .then(({data}) => {
-            data.forEach(p => {
-              p.segments = p.segments ? p.segments.split(",").map(s => s.split("-")) : [];
+            .get("/item/spec/params?gid=" + this.group.id)
+            .then(({data}) => {
+              data.forEach(p => {
+                p.segments = p.segments ? p.segments.split(",").map(s => s.split("-")) : [];
+              })
+              this.params = data;
             })
-            this.params = data;
-          })
-          .catch(() => {
-            this.params = [];
-          });
+            .catch(() => {
+              this.params = [];
+            });
       },
       editParam(param) {
         this.param = param;
@@ -157,15 +157,15 @@
       },
       deleteParam(id) {
         this.$message.confirm("确认要删除该参数吗？")
-          .then(() => {
-            this.$http.delete("/item/spec/param/" + id)
-              .then(() => {
-                this.$message.success("删除成功");
-              })
-              .catch(() => {
-                this.$message.error("删除失败");
-              })
-          })
+            .then(() => {
+              this.$http.delete("/item/spec/param/" + id)
+                  .then(() => {
+                    this.$message.success("删除成功");
+                  })
+                  .catch(() => {
+                    this.$message.error("删除失败");
+                  })
+            })
         // 重新加载数据
         this.loadData();
       },

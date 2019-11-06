@@ -10,7 +10,7 @@
       </v-flex>
 
       <v-flex xs10 md6>
-        <v-card >
+        <v-card>
           <v-card-text class="px2">
             <div ref="pie" style="width: 100%;height:350px"></div>
           </v-card-text>
@@ -28,12 +28,10 @@
 
   export default {
     name: "dashboard",
-    data(){
-      return {
-
-      }
+    data() {
+      return {}
     },
-    mounted(){
+    mounted() {
       this.$nextTick(() => {
         var sale = echarts.init(this.$refs.sale);
 
@@ -44,10 +42,10 @@
           },
           tooltip: {},
           legend: {
-            data:['销量']
+            data: ['销量']
           },
           xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
           },
           yAxis: {},
           series: [{
@@ -67,17 +65,17 @@
           title: {
             text: '访问来源'
           },
-          series : [
+          series: [
             {
               name: '访问来源',
               type: 'pie',
               radius: '55%',
-              data:[
-                {value:235, name:'视频广告'},
-                {value:274, name:'联盟广告'},
-                {value:310, name:'邮件营销'},
-                {value:335, name:'直接访问'},
-                {value:400, name:'搜索引擎'}
+              data: [
+                {value: 235, name: '视频广告'},
+                {value: 274, name: '联盟广告'},
+                {value: 310, name: '邮件营销'},
+                {value: 335, name: '直接访问'},
+                {value: 400, name: '搜索引擎'}
               ]
             }
           ],

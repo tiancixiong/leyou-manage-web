@@ -45,11 +45,11 @@
           <v-btn icon @click="editGoods(props.item)">
             <i class="el-icon-edit"/>
           </v-btn>
-          <v-btn icon>
+          <v-btn icon @click="deleteGoods(props.item)">
             <i class="el-icon-delete"/>
           </v-btn>
-          <v-btn icon v-if="props.item.saleable">下架</v-btn>
-          <v-btn icon v-else>上架</v-btn>
+          <v-btn icon v-if="props.item.saleable" @click="editSaleable(props.item)">下架</v-btn>
+          <v-btn icon v-else @click="editSaleable(props.item)">上架</v-btn>
         </td>
       </template>
     </v-data-table>
@@ -165,6 +165,30 @@
         // 获取要编辑的goods
         this.oldGoods = oldGoods;
       },
+      deleteGoods(item) {
+        this.$message.confirm('此操作将永久删除该商品, 是否继续?').then(() => {
+          // 发起删除请求
+          this.$http.delete("/item/goods/" + item.id)
+              .then(() => {
+                // 删除成功
+                this.$message.success("删除成功！");
+                // 重新加载数据
+                this.getDataFromServer();
+              })
+              .catch(() => {
+                // 删除失败
+                this.$message.info("删除已取消！");
+              });
+        });
+      },
+      editSaleable(item) {
+        // 发起请求
+        this.$http.put("/item/goods/saleable/" + item.id)
+            .then(resp => { // 这里使用箭头函数
+              // 成功，改变商品的上下架状态
+              item.saleable = !item.saleable;
+            })
+      },
       closeWindow() {
         console.log(1)
         // 重新加载数据
@@ -174,13 +198,13 @@
         // 将步骤调整到1
         this.step = 1;
       },
-      previous(){
-        if(this.step > 1){
+      previous() {
+        if (this.step > 1) {
           this.step--
         }
       },
-      next(){
-        if(this.step < 4 && this.$refs.goodsForm.$refs.basic.validate()){
+      next() {
+        if (this.step < 4 && this.$refs.goodsForm.$refs.basic.validate()) {
           this.step++
         }
       }

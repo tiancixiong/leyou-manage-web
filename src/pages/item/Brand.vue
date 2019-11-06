@@ -134,31 +134,31 @@
       editBrand(oldBrand) {
         // 根据品牌信息查询商品分类
         this.$http.get("/item/category/bid/" + oldBrand.id)
-          .then(({data}) => {
-            // 修改标记
-            this.isEdit = true;
-            // 控制弹窗可见：
-            this.show = true;
-            // 获取要编辑的brand
-            this.oldBrand = oldBrand;
-            // 回显商品分类
-            this.oldBrand.categories = data;
-          })
+            .then(({data}) => {
+              // 修改标记
+              this.isEdit = true;
+              // 控制弹窗可见：
+              this.show = true;
+              // 获取要编辑的brand
+              this.oldBrand = oldBrand;
+              // 回显商品分类
+              this.oldBrand.categories = data;
+            })
       },
       deleteBrand(item) {
         this.$message.confirm('此操作将永久删除该品牌, 是否继续?').then(() => {
           // 发起删除请求
           this.$http.delete("/item/brand/" + item.id)
-            .then(() => {
-              // 删除成功
-              this.$message.success("删除成功！");
-              // 重新加载数据
-              this.getDataFromServer();
-            })
-            .catch(() => {
-              // 删除失败
-              this.$message.info("删除已取消！");
-            });
+              .then(() => {
+                // 删除成功
+                this.$message.success("删除成功！");
+                // 重新加载数据
+                this.getDataFromServer();
+              })
+              .catch(() => {
+                // 删除失败
+                this.$message.info("删除已取消！");
+              });
         });
       },
       closeWindow() {
